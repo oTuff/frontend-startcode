@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import userFacade from "../utils/userFacade.js";
 import {useNavigate} from "react-router";
-import trainingFacade from "../utils/trainingFacade.js";
+import loginFacade from "../utils/loginFacade.js";
 
-function SignUp() {
+function SignUp({setLoggedIn}) {
 
     const navigate = useNavigate()
     const init = {
@@ -49,28 +49,32 @@ function SignUp() {
 
         signUp(userCredentials.userName, userCredentials.userPass, userCredentials.userEmail,
             userCredentials.streetAddress, userCredentials.zipCode, userCredentials.cityName);
-
-
-
     }
 
     const signUp = (user, pass, email, streetAddress, zipCode, cityName) => {
         userFacade.createUser(user, pass, email, streetAddress, zipCode, cityName)
-            .then(res => navigate("/SignUpConfirmation"))
+            .then(() => {
+                loginFacade.login(user, pass)
+                    .then(res => setLoggedIn(true))
+                    .catch(async err => {
+                        if (err.status) {
+                            setError(await err.fullError.then(e => e.message))
+                            err.fullError.then(e => console.log(e.message))
+                        }
+                    })
+                navigate("/")
+            })
             .catch(async err => {
                 if (err.status) {
                     setError(await err.fullError.then(e => e.message))
                     err.fullError.then(e => console.log(e.message))
                 }
             })
-
-
     }
 
     const onChange = (evt) => {
         setUserCredentials({...userCredentials, [evt.target.id]: evt.target.value})
     }
-
 
     return (
         <div className="signup">

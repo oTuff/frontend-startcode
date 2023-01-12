@@ -17,5 +17,4 @@ export default function LoggedIn({setLoggedIn}) {
             <button onClick={logout}>Logout</button>
         </div>
     )
-
 }

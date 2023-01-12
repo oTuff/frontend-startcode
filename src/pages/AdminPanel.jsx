@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import "../styles/adminpanel.css";
 import userFacade from "../utils/userFacade.js";
-import {forEach} from "react-bootstrap/ElementChildren";
 
 function AdminPanel({trainingFacade}) {
     const [training, setTraining] = useState([]);
@@ -266,7 +265,6 @@ function AdminPanel({trainingFacade}) {
             </form>
             </div>
         </div>
-
     );
        }
 }
